@@ -7,6 +7,10 @@ import com.google.gson.JsonObject;
 import java.util.Iterator;
 import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+
 /**
  * Created by qiuyouzone on 2018/5/18.
  */
@@ -46,4 +50,11 @@ public class ParamsUtils {
 
         return jsonObject.toString();
     }
+
+    public static RequestBody getRequestBody(String service, String method, Map<String, String> parms, boolean isContainToken){
+        String jsonObjectParams = getJsonObjectParams(service, method, parms, isContainToken);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),jsonObjectParams);
+        return requestBody;
+    }
+
 }

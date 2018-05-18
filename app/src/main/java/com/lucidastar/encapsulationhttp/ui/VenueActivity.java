@@ -12,8 +12,12 @@ import com.lucidastar.encapsulationhttp.bean.VenueListBean;
 import com.lucidastar.encapsulationhttp.nettools.api.BaseApi;
 import com.lucidastar.encapsulationhttp.nettools.http.HttpManager;
 import com.lucidastar.encapsulationhttp.nettools.listener.HttpOnNextListener;
+import com.lucidastar.encapsulationhttp.utils.MyConstant;
 import com.mine.lucidastarutils.log.KLog;
 import com.mine.lucidastarutils.utils.ToastUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class VenueActivity extends BaseActivity {
 
@@ -24,6 +28,7 @@ public class VenueActivity extends BaseActivity {
     }
 
     public void loadData(View view) {
+        Map<String,String> params = new HashMap<>();
         BaseApi<VenueListBean> baseApi = new VenuePostApi(new HttpOnNextListener<VenueListBean>() {
             @Override
             public void onNext(VenueListBean venueListBean) {
@@ -34,7 +39,7 @@ public class VenueActivity extends BaseActivity {
             public void onError(Throwable e) {
                 super.onError(e);
             }
-        }, this);
+        }, this,MyConstant.VENUE_SERVICE,MyConstant.VENUE_METHOD,params);
 
         baseApi.setShowProgress(true);
         String baseUrl = baseApi.getBaseUrl();

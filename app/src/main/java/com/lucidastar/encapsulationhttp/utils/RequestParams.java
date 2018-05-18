@@ -66,7 +66,7 @@ public class RequestParams {
 
         //默认添加TOKEN
 //        if (!TextUtils.isEmpty(MyApplication.getInstance().getToken()))
-//            addTopLevelParams("token", MyApplication.getInstance().getToken());
+            addTopLevelParams("token", "39faf3f377694697bb465af0da648683");
 
         //默认添加渠道号
 //        if (!TextUtils.isEmpty(MyApplication.getInstance().getChannel()))
