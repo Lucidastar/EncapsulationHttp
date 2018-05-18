@@ -1,4 +1,4 @@
-package com.lucidastar.encapsulationhttp.exception;
+package com.lucidastar.encapsulationhttp.nettools.exception;
 
 /**
  * Created by qiuyouzone on 2018/4/28.
@@ -30,7 +30,7 @@ public class HttpTimeException extends RuntimeException {
                 message = "无数据";
                 break;
             case MSG_NO_NET:
-                message = "无网络";
+                message = "无网络,请检查网络设置";
                 break;
             default:
                 message = "error";

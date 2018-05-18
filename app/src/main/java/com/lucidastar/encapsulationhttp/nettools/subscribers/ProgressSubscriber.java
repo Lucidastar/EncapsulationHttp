@@ -1,22 +1,22 @@
-package com.lucidastar.encapsulationhttp.subscribers;
+package com.lucidastar.encapsulationhttp.nettools.subscribers;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.lucidastar.encapsulationhttp.api.BaseApi;
-import com.lucidastar.encapsulationhttp.exception.HttpTimeException;
-import com.lucidastar.encapsulationhttp.listener.HttpOnNextListener;
-import com.mine.lucidastarutils.utils.AppUtils;
+import com.lucidastar.encapsulationhttp.nettools.api.BaseApi;
+import com.lucidastar.encapsulationhttp.nettools.exception.HttpTimeException;
+import com.lucidastar.encapsulationhttp.nettools.listener.HttpOnNextListener;
 import com.mine.lucidastarutils.utils.NetworkUtils;
+import com.mine.lucidastarutils.utils.ToastUtils;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.lang.ref.SoftReference;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 
-import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -25,7 +25,7 @@ import io.reactivex.disposables.Disposable;
  * Created by qiuyouzone on 2018/5/2.
  */
 
-public class ProgressSubscriber1<T> implements Observer<T> {
+public class ProgressSubscriber<T> implements Observer<T> {
 
     /*是否弹框*/
     private boolean showPorgress = true;
@@ -45,7 +45,7 @@ public class ProgressSubscriber1<T> implements Observer<T> {
      *
      * @param api
      */
-    public ProgressSubscriber1(BaseApi api) {
+    public ProgressSubscriber(BaseApi api) {
         this.api = api;
         this.mSubscriberOnNextListener = api.getListener();
         this.mActivity = new SoftReference<>(api.getRxAppCompatActivity());
@@ -107,7 +107,6 @@ public class ProgressSubscriber1<T> implements Observer<T> {
     @Override
     public void onSubscribe(@NonNull Disposable d) {
         disposable = d;
-
         //如果没有网络则不进行请求
        if (!NetworkUtils.isConnected()) {
             disposable.dispose();
@@ -115,6 +114,7 @@ public class ProgressSubscriber1<T> implements Observer<T> {
             return;
         }
         showProgressDialog();
+
 
         //*缓存并且有网
         /*if (api.isCache() && NetworkUtils.isConnected()) {
@@ -198,19 +198,20 @@ public class ProgressSubscriber1<T> implements Observer<T> {
 
     /*错误统一处理*/
     private void errorDo(Throwable e) {
-        Context context = mActivity.get();
-        if (context == null) return;
+//        Context context = mActivity.get();
+//        if (context == null) return;
         if (e instanceof SocketTimeoutException) {
-            Toast.makeText(context, "网络中断，请检查您的网络状态", Toast.LENGTH_SHORT).show();
+            ToastUtils.showShortToastSafe("链接超时，请检查您的网络状态");
         } else if (e instanceof ConnectException) {
-            Toast.makeText(context, "网络中断，请检查您的网络状态", Toast.LENGTH_SHORT).show();
+            ToastUtils.showShortToastSafe("网络中断，请检查您的网络状态");
         } else if (e instanceof HttpTimeException) {
             //自定义错误
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            if (!TextUtils.isEmpty(e.getMessage())) {
+                ToastUtils.showShortToastSafe(e.getMessage());
+            }
         } else {
-//            Toast.makeText(context, "错误" + e.getMessage(), Toast.LENGTH_SHORT).show();
             //其他错误
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            ToastUtils.showShortToastSafe(e.getMessage());
         }
         if (mSubscriberOnNextListener.get() != null) {
             mSubscriberOnNextListener.get().onError(e);
@@ -233,11 +234,7 @@ public class ProgressSubscriber1<T> implements Observer<T> {
      * 取消ProgressDialog的时候，取消对observable的订阅，同时也取消了http请求
      */
     public void onCancelProgress() {
-//        if (!this.isUnsubscribed()) {
-//            this.unsubscribe();
-//        }
-        if (disposable != null && !disposable.isDisposed())
-            disposable.dispose();
+        unSubscribe();
     }
 
     public boolean isShowPorgress() {
@@ -253,7 +250,7 @@ public class ProgressSubscriber1<T> implements Observer<T> {
         this.showPorgress = showPorgress;
     }
 
-    public void unsubscribe() {
+    public void unSubscribe() {
         if (disposable != null && !disposable.isDisposed())
             disposable.dispose();
     }

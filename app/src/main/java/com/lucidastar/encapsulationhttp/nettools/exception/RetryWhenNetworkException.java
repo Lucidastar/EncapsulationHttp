@@ -1,4 +1,4 @@
-package com.lucidastar.encapsulationhttp.exception;
+package com.lucidastar.encapsulationhttp.nettools.exception;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;

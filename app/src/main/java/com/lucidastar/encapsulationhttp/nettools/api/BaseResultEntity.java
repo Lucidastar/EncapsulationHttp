@@ -1,12 +1,13 @@
-package com.lucidastar.encapsulationhttp.api;
+package com.lucidastar.encapsulationhttp.nettools.api;
 
 /**
  * Created by qiuyouzone on 2018/4/28.
  */
 
-public class ResultEntity<T> {
+public class BaseResultEntity<T> {
     private int code;
     private String msg;
+    private boolean success;
     private T data;
 
     public int getCode() {
@@ -23,6 +24,14 @@ public class ResultEntity<T> {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
     public T getData() {

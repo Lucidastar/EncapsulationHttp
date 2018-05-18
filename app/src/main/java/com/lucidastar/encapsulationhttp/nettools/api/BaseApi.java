@@ -1,7 +1,9 @@
-package com.lucidastar.encapsulationhttp.api;
+package com.lucidastar.encapsulationhttp.nettools.api;
 
-import com.lucidastar.encapsulationhttp.exception.HttpTimeException;
-import com.lucidastar.encapsulationhttp.listener.HttpOnNextListener;
+
+import com.lucidastar.encapsulationhttp.nettools.exception.HttpTimeException;
+import com.lucidastar.encapsulationhttp.nettools.http.Constant;
+import com.lucidastar.encapsulationhttp.nettools.listener.HttpOnNextListener;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.lang.ref.SoftReference;
@@ -14,7 +16,7 @@ import retrofit2.Retrofit;
  * Created by qiuyouzone on 2018/4/28.
  */
 
-public abstract class BaseApi<T> implements Function<ResultEntity<T>, T> {
+public abstract class BaseApi<T> implements Function<BaseResultEntity<T>, T> {
     //rx生命周期管理
     private SoftReference<RxAppCompatActivity> rxAppCompatActivity;
     /*回调*/
@@ -26,7 +28,7 @@ public abstract class BaseApi<T> implements Function<ResultEntity<T>, T> {
     /*是否需要缓存处理*/
     private boolean cache;
     /*基础url*/
-    private String baseUrl = "https://www.izaodao.com/Api/";
+    private String baseUrl = Constant.BASE_URL;
     /*方法-如果需要缓存必须设置这个参数；不需要不用設置*/
     private String method="";
     /*超时时间-默认6秒*/
@@ -43,6 +45,8 @@ public abstract class BaseApi<T> implements Function<ResultEntity<T>, T> {
     private long retryIncreaseDelay = 10;
     /*缓存url-可手动设置*/
     private String cacheUrl;
+
+    private boolean isContainToken = true;
     public BaseApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity) {
         setListener(listener);
         setRxAppCompatActivity(rxAppCompatActivity);
@@ -170,17 +174,28 @@ public abstract class BaseApi<T> implements Function<ResultEntity<T>, T> {
         this.retryIncreaseDelay = retryIncreaseDelay;
     }
 
+    public boolean isContainToken() {
+        return isContainToken;
+    }
+
+    public void setContainToken(boolean containToken) {
+        isContainToken = containToken;
+    }
+
     /*
-         * 获取当前rx生命周期
-         * @return
-         */
+             * 获取当前rx生命周期
+             * @return
+             */
     public RxAppCompatActivity getRxAppCompatActivity() {
         return rxAppCompatActivity.get();
     }
 
     @Override
-    public T apply(ResultEntity<T> httpResult) throws Exception {
-        if (httpResult.getCode() == 0) {
+    public T apply(BaseResultEntity<T> httpResult) throws Exception {
+        /*if (httpResult.getCode() == 0) {
+            throw new HttpTimeException(httpResult.getMsg());
+        }*/
+        if (!httpResult.isSuccess()){
             throw new HttpTimeException(httpResult.getMsg());
         }
         return httpResult.getData();
