@@ -21,8 +21,9 @@ public class VenuePostApi extends BaseApi<VenueListBean> {
     @Override
     public Observable getObservable(Retrofit retrofit) {
         VenuePostService venuePostService = retrofit.create(VenuePostService.class);
-        return venuePostService.getVenue();
+        return venuePostService.getVenue(null);
     }
+
 
 
 }

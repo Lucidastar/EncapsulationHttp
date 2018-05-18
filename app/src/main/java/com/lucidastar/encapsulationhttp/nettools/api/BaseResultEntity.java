@@ -8,7 +8,8 @@ public class BaseResultEntity<T> {
     private int code;
     private String msg;
     private boolean success;
-    private T data;
+    private String sn;
+    private T entity;
 
     public int getCode() {
         return code;
@@ -34,11 +35,19 @@ public class BaseResultEntity<T> {
         this.success = success;
     }
 
-    public T getData() {
-        return data;
+    public String getSn() {
+        return sn;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setSn(String sn) {
+        this.sn = sn;
+    }
+
+    public T getEntity() {
+        return entity;
+    }
+
+    public void setEntity(T entity) {
+        this.entity = entity;
     }
 }

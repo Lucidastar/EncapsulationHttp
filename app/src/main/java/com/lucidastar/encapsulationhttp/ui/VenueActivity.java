@@ -13,6 +13,7 @@ import com.lucidastar.encapsulationhttp.nettools.api.BaseApi;
 import com.lucidastar.encapsulationhttp.nettools.http.HttpManager;
 import com.lucidastar.encapsulationhttp.nettools.listener.HttpOnNextListener;
 import com.mine.lucidastarutils.log.KLog;
+import com.mine.lucidastarutils.utils.ToastUtils;
 
 public class VenueActivity extends BaseActivity {
 
@@ -26,8 +27,7 @@ public class VenueActivity extends BaseActivity {
         BaseApi<VenueListBean> baseApi = new VenuePostApi(new HttpOnNextListener<VenueListBean>() {
             @Override
             public void onNext(VenueListBean venueListBean) {
-//                KLog.d(venueListBean.toString());
-//                Toast.makeText(VenueActivity.this,venueListBean.toString()+"年后",Toast.LENGTH_SHORT).show();
+                ToastUtils.showShortToastSafe(venueListBean.getStatiumBean().getData().get(0).toString());
             }
 
             @Override

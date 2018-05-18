@@ -196,9 +196,9 @@ public abstract class BaseApi<T> implements Function<BaseResultEntity<T>, T> {
             throw new HttpTimeException(httpResult.getMsg());
         }*/
         if (!httpResult.isSuccess()){
-            throw new HttpTimeException(httpResult.getMsg());
+            throw new HttpTimeException(HttpTimeException.NO_DATA);
         }
-        return httpResult.getData();
+        return httpResult.getEntity();
     }
 
     public String getCacheUrl() {
@@ -208,5 +208,7 @@ public abstract class BaseApi<T> implements Function<BaseResultEntity<T>, T> {
     public void setCacheUrl(String cacheUrl) {
         this.cacheUrl = cacheUrl;
     }
+
+
 
 }

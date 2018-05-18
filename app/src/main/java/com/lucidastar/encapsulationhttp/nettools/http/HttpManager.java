@@ -7,6 +7,7 @@ import com.lucidastar.encapsulationhttp.nettools.api.BaseApi;
 import com.lucidastar.encapsulationhttp.nettools.exception.RetryWhenNetworkException;
 import com.lucidastar.encapsulationhttp.nettools.listener.HttpOnNextListener;
 import com.lucidastar.encapsulationhttp.nettools.subscribers.ProgressSubscriber;
+import com.mine.lucidastarutils.log.KLog;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import java.lang.ref.SoftReference;
@@ -106,7 +107,8 @@ public class HttpManager {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {
-                Log.d("RxRetrofit", "Retrofit====Message:" + message);
+//                Log.d("RxRetrofit", "Retrofit====Message:" + message);
+                KLog.d("Retrofit====Message:" + message);
             }
         });
         loggingInterceptor.setLevel(level);
