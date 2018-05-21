@@ -7,12 +7,13 @@ import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 /**
  * Created by qiuyouzone on 2018/5/18.
  */
 
 public interface VenuePostService {
-    @GET("/app2/request?body=")
+    @POST("/app2/request?")
     Observable<BaseResultEntity<VenueListBean>> getVenue(@Body RequestBody body);
 }

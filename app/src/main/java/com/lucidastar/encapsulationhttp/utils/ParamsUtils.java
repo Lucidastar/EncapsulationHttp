@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import java.util.Iterator;
 import java.util.Map;
 
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -53,7 +54,7 @@ public class ParamsUtils {
 
     public static RequestBody getRequestBody(String service, String method, Map<String, String> parms, boolean isContainToken){
         String jsonObjectParams = getJsonObjectParams(service, method, parms, isContainToken);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),jsonObjectParams);
+        RequestBody requestBody = new FormBody.Builder().add("body",jsonObjectParams).build();
         return requestBody;
     }
 

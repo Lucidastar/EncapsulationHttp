@@ -44,6 +44,7 @@ public class VenueActivity extends BaseActivity {
         baseApi.setShowProgress(true);
         String baseUrl = baseApi.getBaseUrl();
         String url = baseApi.getUrl();
+        KLog.d("baseUrl="+baseUrl+",url="+url);
         HttpManager.getInstance().doHttpDeal(baseApi);
     }
 }
