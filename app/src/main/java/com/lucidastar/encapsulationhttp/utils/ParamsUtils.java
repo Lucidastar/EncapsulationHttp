@@ -1,15 +1,11 @@
 package com.lucidastar.encapsulationhttp.utils;
 
-import android.util.Log;
-
 import com.google.gson.JsonObject;
 
 import java.util.Iterator;
 import java.util.Map;
 
 import okhttp3.FormBody;
-import okhttp3.MediaType;
-import okhttp3.Request;
 import okhttp3.RequestBody;
 
 /**
@@ -17,25 +13,25 @@ import okhttp3.RequestBody;
  */
 
 public class ParamsUtils {
-    public static String getJsonObjectParams(String service, String method, Map<String, String> parms, boolean isContainToken) {
+    public static String getJsonObjectParams(String service, String method, Map<String, String> params, boolean isContainToken) {
 //        if (parms == null) {
 //            throw new ParameIsNullException();
 //        }
 
-        RequestParams params1 = new RequestParams(service, method);
+        RequestParams param = new RequestParams(service, method);
         if (!isContainToken){
-            params1.removeToken();
+            param.removeToken();
         }
-        if (parms != null && !parms.isEmpty()) {
-            Iterator iter = parms.entrySet().iterator();
+        if (params != null && !params.isEmpty()) {
+            Iterator iter = params.entrySet().iterator();
             while (iter.hasNext()) {
                 Map.Entry entry = (Map.Entry) iter.next();
-                params1.put((String) entry.getKey(),(String)entry.getValue());
+                param.put((String) entry.getKey(),(String)entry.getValue());
 
             }
         }
 
-        JsonObject jsonObject = params1.getJsonObject();
+        JsonObject jsonObject = param.getJsonObject();
 
         //打印日志
         /*if (BuildConfig.LOG_DEBUG) {
