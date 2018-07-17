@@ -28,23 +28,31 @@ public class VenueActivity extends BaseActivity {
     }
 
     public void loadData(View view) {
-        Map<String,String> params = new HashMap<>();
-        BaseApi<VenueListBean> baseApi = new VenuePostApi(new HttpOnNextListener<VenueListBean>() {
-            @Override
-            public void onNext(VenueListBean venueListBean) {
-                ToastUtils.showShortToastSafe(venueListBean.getStatiumBean().getData().get(0).toString());
-            }
+        for (int i = 0; i < 6; i++) {
+            Map<String,String> params = new HashMap<>();
+            BaseApi<VenueListBean> baseApi = new VenuePostApi(new HttpOnNextListener<VenueListBean>() {
+                @Override
+                public void onNext(VenueListBean venueListBean) {
+                    ToastUtils.showShortToastSafe(venueListBean.getStatiumBean().getData().get(0).toString());
+                    KLog.i(venueListBean.getStatiumBean().getData().get(0).toString());
+                }
 
-            @Override
-            public void onError(Throwable e) {
-                super.onError(e);
+                @Override
+                public void onError(Throwable e) {
+                    super.onError(e);
+                }
+            }, this,MyConstant.VENUE_SERVICE,MyConstant.VENUE_METHOD,params);
+            if (i == 0){
+                baseApi.setShowProgress(true);
+            }else {
+                baseApi.setShowProgress(false);
             }
-        }, this,MyConstant.VENUE_SERVICE,MyConstant.VENUE_METHOD,params);
+            baseApi.setCancel(true);
+            String baseUrl = baseApi.getBaseUrl();
+            String url = baseApi.getUrl();
+            KLog.d("baseUrl="+baseUrl+",url="+url);
+            HttpManager.getInstance().doHttpDeal(baseApi);
+        }
 
-        baseApi.setShowProgress(true);
-        String baseUrl = baseApi.getBaseUrl();
-        String url = baseApi.getUrl();
-        KLog.d("baseUrl="+baseUrl+",url="+url);
-        HttpManager.getInstance().doHttpDeal(baseApi);
     }
 }
