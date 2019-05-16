@@ -28,13 +28,13 @@ public class VenueActivity extends BaseActivity {
     }
 
     public void loadData(View view) {
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 200; i++) {
             Map<String,String> params = new HashMap<>();
             BaseApi<VenueListBean> baseApi = new VenuePostApi(new HttpOnNextListener<VenueListBean>() {
                 @Override
                 public void onNext(VenueListBean venueListBean) {
-                    ToastUtils.showShortToastSafe(venueListBean.getStatiumBean().getData().get(0).toString());
-                    KLog.i(venueListBean.getStatiumBean().getData().get(0).toString());
+//                    ToastUtils.showShortToastSafe(venueListBean.getStatiumBean().getData().get(0).toString());
+//                    KLog.i(venueListBean.getStatiumBean().getData().get(0).toString());
                 }
 
                 @Override
