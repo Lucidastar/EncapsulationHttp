@@ -7,6 +7,10 @@ import android.view.View;
 
 import com.lucidastar.encapsulationhttp.ui.VenueActivity;
 
+import java.util.concurrent.Callable;
+
+import io.reactivex.Observable;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -17,5 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void openVenue(View view) {
         startActivity(new Intent(this, VenueActivity.class));
+    }
+    public void openVenueDetail(View view) {
+
     }
 }

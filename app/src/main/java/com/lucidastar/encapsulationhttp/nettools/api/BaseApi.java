@@ -192,12 +192,12 @@ public abstract class BaseApi<T> implements Function<BaseResultEntity<T>, T> {
 
     @Override
     public T apply(BaseResultEntity<T> httpResult) throws Exception {
-        /*if (httpResult.getCode() == 0) {
+        if (httpResult.getCode() != 200) {
             throw new HttpTimeException(httpResult.getMsg());
-        }*/
-        if (!httpResult.isSuccess()){
-            throw new HttpTimeException(HttpTimeException.NO_DATA);
         }
+        /*if (!httpResult.isSuccess()){
+            throw new HttpTimeException(HttpTimeException.NO_DATA);
+        }*/
         return httpResult.getEntity();
     }
 

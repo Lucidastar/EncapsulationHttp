@@ -9,7 +9,7 @@ public class BaseResultEntity<T> {
     private String msg;
     private boolean success;
     private String sn;
-    private T entity;
+    private T data;
 
     public int getCode() {
         return code;
@@ -44,10 +44,10 @@ public class BaseResultEntity<T> {
     }
 
     public T getEntity() {
-        return entity;
+        return data;
     }
 
     public void setEntity(T entity) {
-        this.entity = entity;
+        this.data = entity;
     }
 }

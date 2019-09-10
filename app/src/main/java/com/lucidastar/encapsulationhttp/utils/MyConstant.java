@@ -5,7 +5,8 @@ package com.lucidastar.encapsulationhttp.utils;
  */
 
 public class MyConstant {
-    public static final String BASE_URL = "http://oss.qiuyouzone.com";
+//    public static final String BASE_URL = "http://oss.qiuyouzone.com";
+    public static final String BASE_URL = "http://weixin.qiuyouzone.com";
 
     public static final String VENUE_SERVICE = "statium";
     public static final String VENUE_METHOD = "search";

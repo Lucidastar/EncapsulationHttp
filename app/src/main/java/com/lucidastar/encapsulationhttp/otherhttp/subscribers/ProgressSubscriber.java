@@ -1,13 +1,19 @@
 package com.lucidastar.encapsulationhttp.otherhttp.subscribers;
 
 import android.os.Looper;
+import android.text.TextUtils;
 
 import com.lucidastar.encapsulationhttp.otherhttp.exception.ExceptionHandle;
 import com.lucidastar.encapsulationhttp.otherhttp.exception.HttpTimeException;
 import com.lucidastar.encapsulationhttp.otherhttp.listener.HttpOnNextListener;
 import com.mine.lucidastarutils.log.KLog;
 import com.mine.lucidastarutils.utils.NetworkUtils;
+import com.mine.lucidastarutils.utils.ToastUtils;
 
+
+import org.reactivestreams.Subscriber;
+
+import java.net.ConnectException;
 
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
@@ -19,9 +25,9 @@ import io.reactivex.disposables.Disposable;
  */
 
 public class ProgressSubscriber<T>  implements Observer<T>{
-    private HttpOnNextListener mSubscriberOnNextListener;
+    private HttpOnNextListener<T> mSubscriberOnNextListener;
     private Disposable disposable;
-    public ProgressSubscriber(HttpOnNextListener subscriberOnNextListener) {
+    public ProgressSubscriber(HttpOnNextListener<T> subscriberOnNextListener) {
         mSubscriberOnNextListener = subscriberOnNextListener;
     }
     /**
@@ -33,8 +39,8 @@ public class ProgressSubscriber<T>  implements Observer<T>{
         disposable = d;
         //如果没有网络则不进行请求
        if (!NetworkUtils.isConnected()) {
-            disposable.dispose();
-            errorDo(new HttpTimeException(HttpTimeException.MSG_NO_NET));
+            errorDo(new ConnectException());
+           disposable.dispose();
             return;
         }
     }
@@ -61,6 +67,11 @@ public class ProgressSubscriber<T>  implements Observer<T>{
     /*错误统一处理*/
     private void errorDo(Throwable e) {
         ExceptionHandle.ResponeThrowable responeThrowable = ExceptionHandle.handleException(e);
+        if (!TextUtils.isEmpty(responeThrowable.message)){//这会把code=500也会打印出来
+//                ToastUtils.show(responeThrowable.getMessage());
+//            UtilToast.show(responeThrowable.message);
+            ToastUtils.showShortToast(responeThrowable.message);
+        }
         if (mSubscriberOnNextListener != null) {
             mSubscriberOnNextListener.onError(responeThrowable.message);
         }

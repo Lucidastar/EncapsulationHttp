@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.lucidastar.encapsulationhttp.nettools.api.BaseApi;
 import com.lucidastar.encapsulationhttp.nettools.exception.HttpTimeException;
 import com.lucidastar.encapsulationhttp.nettools.listener.HttpOnNextListener;
+import com.lucidastar.encapsulationhttp.otherhttp.exception.ExceptionHandle;
 import com.mine.lucidastarutils.utils.NetworkUtils;
 import com.mine.lucidastarutils.utils.ToastUtils;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -151,6 +152,7 @@ public class ProgressSubscriber<T> implements Observer<T> {
     public void onError(final Throwable e) {
         dismissProgressDialog();
         errorDo(e);
+
         /*需要緩存并且本地有缓存才返回*/
         /*if (api.isCache()) {
             Observable.just(api.getUrl()).subscribe(new Observer<String>() {
@@ -198,8 +200,9 @@ public class ProgressSubscriber<T> implements Observer<T> {
 
     /*错误统一处理*/
     private void errorDo(Throwable e) {
-//        Context context = mActivity.get();
-//        if (context == null) return;
+        Context context = mActivity.get();
+        if (context == null) return;
+        ExceptionHandle.handleException(e);
         if (e instanceof SocketTimeoutException) {
             ToastUtils.showShortToastSafe("链接超时，请检查您的网络状态");
         } else if (e instanceof ConnectException) {

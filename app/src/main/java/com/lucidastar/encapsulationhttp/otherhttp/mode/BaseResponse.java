@@ -6,24 +6,24 @@ package com.lucidastar.encapsulationhttp.otherhttp.mode;
 
 public class BaseResponse<T> {
 
-    private String sn;
-    private boolean success;
+    private int code;
+    private String message;
     private T entity;
 
-    public String getSn() {
-        return sn;
+    public int getCode() {
+        return code;
     }
 
-    public void setSn(String sn) {
-        this.sn = sn;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public boolean isSuccess() {
-        return success;
+    public String getMessage() {
+        return message;
     }
 
-    public void setSuccess(boolean success) {
-        this.success = success;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public T getData() {

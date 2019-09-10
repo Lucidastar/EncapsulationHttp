@@ -16,4 +16,6 @@ import retrofit2.http.POST;
 public interface VenuePostService {
     @POST("/app2/request?")
     Observable<BaseResultEntity<VenueListBean>> getVenue(@Body RequestBody body);
+    @GET("/qiuyouzone-statium/spaceController/getSpaceList")
+    Observable<BaseResultEntity<String>> getVenueDetail();
 }

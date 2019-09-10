@@ -95,7 +95,7 @@ public class RequestParams {
             //默认添加TOKEN
             if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value)) {
                 requestJsonExpression.addProperty(key, value);
-                //    super.put(HttpManager.PARAMS_NAME, requestJsonExpression.toString());
+                //    super.put(HttpManager1.PARAMS_NAME, requestJsonExpression.toString());
             }
         }
     }
@@ -109,7 +109,7 @@ public class RequestParams {
             if (requestJsonExpression != null) {
                 //默认添加TOKEN
                 Object token = requestJsonExpression.remove("token");
-                //super.put(HttpManager.PARAMS_NAME, requestJsonExpression.toString());
+                //super.put(HttpManager1.PARAMS_NAME, requestJsonExpression.toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,13 +130,13 @@ public class RequestParams {
             paramsJsonExpression.add(key, new JsonParser().parse(s).getAsJsonObject());
         }
         //提交 post／get 请求，参数名都为 body
-        //   super.put(HttpManager.PARAMS_NAME, requestJsonExpression.toString());
+        //   super.put(HttpManager1.PARAMS_NAME, requestJsonExpression.toString());
     }
 
     public void put(String key, JsonObject value) {
         if (value != null) {
             paramsJsonExpression.add(key, value);
-            //     super.put(HttpManager.PARAMS_NAME, requestJsonExpression.toString());
+            //     super.put(HttpManager1.PARAMS_NAME, requestJsonExpression.toString());
         }
     }
 
@@ -144,7 +144,7 @@ public class RequestParams {
         if (value != -1)
             paramsJsonExpression.addProperty(key, value);
         //提交 post／get 请求，参数名都为 body
-        //  super.put(HttpManager.PARAMS_NAME, requestJsonExpression.toString());
+        //  super.put(HttpManager1.PARAMS_NAME, requestJsonExpression.toString());
     }
 
     public void setParamsJsonExpression(JsonObject paramsJson){

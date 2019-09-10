@@ -1,13 +1,11 @@
 package com.lucidastar.encapsulationhttp.otherhttp.exception;
 
-import android.util.Log;
-
 import com.google.gson.JsonParseException;
-import com.mine.lucidastarutils.log.KLog;
 
 import org.json.JSONException;
 
 import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 
 import retrofit2.HttpException;
 
@@ -15,7 +13,7 @@ import retrofit2.HttpException;
  * Created by qiuyouzone on 2019/5/10.
  */
 
-public class ExceptionHandle extends Exception{
+public class ExceptionHandle extends Exception {
     private static final int UNAUTHORIZED = 401;
     private static final int FORBIDDEN = 403;
     private static final int NOT_FOUND = 404;
@@ -45,8 +43,8 @@ public class ExceptionHandle extends Exception{
 
     public static ResponeThrowable handleException(Throwable e) {
         ResponeThrowable ex;
-        KLog.d("net",e.toString());
-        if (e instanceof HttpTimeException) {
+
+        if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;
             ex = new ResponeThrowable(e, ERROR.HTTP_ERROR);
             switch (httpException.code()) {
@@ -75,15 +73,20 @@ public class ExceptionHandle extends Exception{
             return ex;
         } else if (e instanceof ConnectException) {
             ex = new ResponeThrowable(e, ERROR.NETWORD_ERROR);
-            ex.message = "连接失败";
+            ex.message = "加载失败，请检查网络状态";
             return ex;
         } else if (e instanceof javax.net.ssl.SSLHandshakeException) {
             ex = new ResponeThrowable(e, ERROR.SSL_ERROR);
             ex.message = "证书验证失败";
             return ex;
-        } else {
+        }else if (e instanceof SocketTimeoutException){
+            ex = new ResponeThrowable(e, ERROR.TIME_OUT_ERROR);
+            ex.message = "链接超时";
+            return ex;
+        }else {
             ex = new ResponeThrowable(e, ERROR.UNKNOWN);
-            ex.message = "未知错误";
+//            ex.message = "未知错误";
+            ex.message = "";
             return ex;
         }
     }
@@ -114,6 +117,10 @@ public class ExceptionHandle extends Exception{
          * 证书出错
          */
         public static final int SSL_ERROR = 1005;
+        /**
+         * 超时
+         */
+        public static final int TIME_OUT_ERROR = 1006;
     }
 
     public static class ResponeThrowable extends Exception {
@@ -124,21 +131,41 @@ public class ExceptionHandle extends Exception{
             super(throwable);
             this.code = code;
         }
+        public ResponeThrowable(int code, String message) {
+            this.code = code;
+            this.message = message;
+        }
     }
 
     /**
      * ServerException发生后，将自动转换为ResponeThrowable返回
      */
     public static class ServerException extends RuntimeException {
-        int code;
-        String message;
-
+        public int code;
+        public String message;
+        public Object mObject;
         public ServerException() {
 
         }
+
+        public ServerException(int code, String message) {
+            this.code = code;
+            this.message = message;
+        }
+
+        public ServerException(int code, String message, Object object) {
+            this.code = code;
+            this.message = message;
+            mObject = object;
+        }
+
         public ServerException(String message) {
             super(message);
             this.message = message;
+        }
+
+        public ServerException(int  code) {
+            this.code = code;
         }
     }
 
