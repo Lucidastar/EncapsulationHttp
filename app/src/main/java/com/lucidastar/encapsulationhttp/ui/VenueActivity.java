@@ -4,10 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.lucidastar.encapsulationhttp.R;
-import com.lucidastar.encapsulationhttp.api.VenuePostApi;
-import com.lucidastar.encapsulationhttp.bean.VenueListBean;
-import com.lucidastar.encapsulationhttp.nettools.api.BaseApi;
-import com.lucidastar.encapsulationhttp.nettools.http.HttpManager;
 import com.lucidastar.encapsulationhttp.otherhttp.HttpManager1;
 import com.lucidastar.encapsulationhttp.otherhttp.api.user.UserService;
 import com.lucidastar.encapsulationhttp.otherhttp.base.BaseActivity;
@@ -16,7 +12,6 @@ import com.lucidastar.encapsulationhttp.otherhttp.mode.UserModel;
 import com.lucidastar.encapsulationhttp.otherhttp.subscribers.ProgressSubscriber;
 import com.lucidastar.encapsulationhttp.otherhttp.utils.RxLifecycleUtils;
 import com.lucidastar.encapsulationhttp.otherhttp.utils.RxUtils;
-import com.lucidastar.encapsulationhttp.utils.MyConstant;
 import com.mine.lucidastarutils.log.KLog;
 import com.mine.lucidastarutils.utils.ToastUtils;
 
@@ -24,19 +19,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.FormBody;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
+import java.util.concurrent.TimeUnit;
 
 public class VenueActivity extends BaseActivity {
 
@@ -87,17 +71,19 @@ public class VenueActivity extends BaseActivity {
 
     private void studyOkHttp() {
 
-        HttpManager1.getInstance().createService(UserService.class).getUsers(1,20)
+        HttpManager1.getInstance().createService(UserService.class)
+        .getUsers(1,20)
+        .delay(8, TimeUnit.SECONDS)
         .compose(RxUtils.<List<UserModel>>switchSchedulers())
         .compose(RxLifecycleUtils.<List<UserModel>>bindToLifecycle(this))
-        .subscribe(new ProgressSubscriber<>(new HttpOnNextListener<List<UserModel>>() {
+         .subscribe(new ProgressSubscriber<>(new HttpOnNextListener<List<UserModel>>() {
             @Override
             public void onNext(List<UserModel> userModels) {
                 KLog.i(userModels.size()+"");
                 ToastUtils.showShortToast("数据的大小:"+userModels.size());
             }
         }));
-
+//        Lifecycle
     }
 
 

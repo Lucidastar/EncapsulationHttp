@@ -1,1 +1,1 @@
-include ':app', ':lucidastarutils'
+include ':app', ':lucidastarutils', ':RxNetManager'
